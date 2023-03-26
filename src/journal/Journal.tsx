@@ -13,16 +13,20 @@ export const Journal: React.FC = () => {
   const { data } = useJApi('getJournalEntries', undefined);
 
   return (
-    <div>
+    <Wrapper>
       <h1>{'Journal'}</h1>
       <EntriesWrapper>
         {(data ?? []).map(entry => (
           <JournalEntry {...entry} key={entry.id} />
         ))}
       </EntriesWrapper>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  padding: 1em;
+`;
 
 const EntriesWrapper = styled.div`
   display: flex;
@@ -35,7 +39,7 @@ const JournalEntry = styled((props: JournalEntryType) => {
   return (
     <div {...rest} title={`${id}`}>
       <h4>{title}</h4>
-      <p>{content}</p>
+      <p>{`${content.slice(0, 100)}...`}</p>
     </div>
   );
 })`
