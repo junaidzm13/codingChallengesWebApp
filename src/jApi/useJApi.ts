@@ -15,16 +15,16 @@ export function useJApi<T extends keyof JApiTypeByName>(
   const [data, setData] = useState<Data<T>>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>(undefined);
+  const { resolver } = useJApiClient();
 
   useEffect(() => {
     const fn = async () => {
       setLoading(true);
-      try {
-        const response = await fetchResponse(name, input);
-        setData(response);
-      } catch (e) {
-        setError(`Error`);
-      }
+
+      const response = await resolver(name, input);
+      if (response.data) setData(response.data);
+      else setError(response.error);
+
       setLoading(false);
     };
     fn();
