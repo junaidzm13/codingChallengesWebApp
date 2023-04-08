@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { fetchResponse } from './fetchApi';
 import { JApiTypeByName, Data } from './JApiTypeByName';
 
@@ -22,8 +22,8 @@ export function useJApi<T extends keyof JApiTypeByName>(
       try {
         const response = await fetchResponse(name, input);
         setData(response);
-      } catch {
-        setError('error');
+      } catch (e) {
+        setError(`Error`);
       }
       setLoading(false);
     };
@@ -35,4 +35,23 @@ export function useJApi<T extends keyof JApiTypeByName>(
     loading,
     error,
   };
+}
+
+export function useJApiClient() {
+  const resolver = useCallback(
+    async <T extends keyof JApiTypeByName>(
+      name: T,
+      input: JApiTypeByName[T]['input']
+    ): Promise<{ data: Data<T>; error: string | undefined }> => {
+      try {
+        const response = await fetchResponse(name, input);
+        return { data: response, error: undefined };
+      } catch (e) {
+        return { data: undefined, error: 'Error' };
+      }
+    },
+    []
+  );
+
+  return { resolver };
 }
