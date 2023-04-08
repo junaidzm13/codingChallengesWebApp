@@ -7,7 +7,7 @@ export type JApiTypeByName = {
     output: Array<JournalEntryType>;
   };
   solveCodingChallenge: {
-    input: { challengeType: ChallengeType; value: string };
+    input: { challengeType: ChallengeType; value: Array<string> };
     output: string;
   };
 };

@@ -25,7 +25,7 @@ type FetchProps =
   | {
       requestType: 'post';
       url: string;
-      requestBody: Record<string, any>;
+      requestBody: Record<string, any> | Array<any>;
     };
 
 const fetchPropsByName: Record<
@@ -42,6 +42,6 @@ function solveCodingChallenge(
   return {
     requestType: 'post',
     url: `coding-challenge/${input.challengeType}`,
-    requestBody: { value: input.value },
+    requestBody: input.value,
   };
 }
